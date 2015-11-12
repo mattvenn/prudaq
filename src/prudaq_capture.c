@@ -111,6 +111,8 @@ int main (int argc, char **argv) {
     return EXIT_FAILURE;
   }
 
+	fprintf(stderr, "-- 1\n");
+
   argc -= optind;
   argv += optind;
 
@@ -120,19 +122,24 @@ int main (int argc, char **argv) {
       perror("unable to open output file");
     }
   }
+	fprintf(stderr, "-- 2\n");
 
   // Install signal handler to catch ctrl-C
   if (SIG_ERR == signal(SIGINT, sig_handler)) {
     perror("Warn: signal handler not installed %d\n");
   }
+	fprintf(stderr, "-- 3\n");
 
   // This segfaults if we're not root.
   prussdrv_init();
+	fprintf(stderr, "-- 3.1\n");
   if (0 != prussdrv_open(PRU_EVTOUT_0)) {
+	fprintf(stderr, "-- 3.2\n");
     fprintf(stderr,
             "prussdrv_open() failed. (Did you forget to run setup.sh?)\n");
     return EXIT_FAILURE;
   }
+	fprintf(stderr, "-- 4\n");
 
   tpruss_intc_initdata pruss_intc_initdata = PRUSS_INTC_INITDATA;
   prussdrv_pruintc_init(&pruss_intc_initdata);
@@ -148,6 +155,7 @@ int main (int argc, char **argv) {
   unsigned int shared_ddr_len = prussdrv_extmem_size();
   unsigned int physical_address = prussdrv_get_phys_addr((void*)shared_ddr);
 
+	fprintf(stderr, "-- 5\n");
   // Accessing the shared memory is slow, so later we'll efficiently copy it out
   // into this local buffer.
   uint32_t *local_buf = (uint32_t *) malloc(shared_ddr_len);

@@ -51,7 +51,7 @@ TOP:
   mov SHARED_RAM, SHARED_RAM_ADDRESS
   lbbo HIGH_COUNT, SHARED_RAM, OFFSET(Params.high_cycles), SIZE(Params.high_cycles)
   lbbo LOW_COUNT, SHARED_RAM, OFFSET(Params.low_cycles), SIZE(Params.low_cycles)
-  lbbo r30, SHARED_RAM, OFFSET(Params.input_select), SIZE(Params.input_select)
+//  lbbo r30, SHARED_RAM, OFFSET(Params.input_select), SIZE(Params.input_select)
 
   mov HIGH_COUNTER, HIGH_COUNT
   mov LOW_COUNTER, LOW_COUNT
@@ -85,7 +85,7 @@ WAIT_H:
   mov LOW_COUNTER, LOW_COUNT
 
   // GPIO clock pin P9_31 goes low
-  clr r30, 0
+  clr r30, 5
 
   // Jump to CYCLE_ODD_L or CYCLE_EVEN_L
   JMP LOW_START
@@ -102,7 +102,7 @@ WAIT_L:
   mov HIGH_COUNTER, HIGH_COUNT
 
   // GPIO clock pin P9_31 goes high
-  set r30, 0
+  set r30, 5
 
   // Start the cycle over, skipping CYCLE_ODD_H if the count is even
   JMP HIGH_START
