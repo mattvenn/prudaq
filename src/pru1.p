@@ -70,7 +70,7 @@ MAIN_LOOP:
   mov SAMPLE.w0, r31.w0
 
   // Wait for falling clock edge
-  wbc r31, 11
+  wbc r31, 12
 
   // Now we use our delay downtime to manage the counters
   add WRITE_POINTER, WRITE_POINTER, 4
