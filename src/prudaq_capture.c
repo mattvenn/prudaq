@@ -250,7 +250,7 @@ int main (int argc, char **argv) {
       // the sample data.
       for (int i = 0; i < (write_index - read_index); i++) {
         // Keep just the lower 10 bits from each 16-bit half of the 32-bit word
-        local_buf[i] &= 0x03ff03ff;
+        local_buf[i] &= 0x0fff0fff;
       }
 
       fwrite(local_buf, bytes, 1, fout);
@@ -265,7 +265,7 @@ int main (int argc, char **argv) {
       bytes_read += bytes;
 
       for (int i = 0; i < tail_words; i++) {
-        local_buf[i] &= 0x03ff03ff;
+        local_buf[i] &= 0x0fff0fff;
       }
 
       fwrite(local_buf, bytes, 1, fout);
@@ -275,7 +275,7 @@ int main (int argc, char **argv) {
       bytes_read += bytes;
 
       for (int i = 0; i < write_index; i++) {
-        local_buf[tail_words + i] &= 0x03ff03ff;
+        local_buf[tail_words + i] &= 0x0fff0fff;
       }
 
       fwrite(local_buf, bytes, 1, fout);

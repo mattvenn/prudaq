@@ -94,6 +94,8 @@ permissions and limitations under the License.
                0x0A0 0x26  // P8.45
                0x0A4 0x26  // P8.46
 
+		0x080 0x26 // P8.21 clock
+
                0x180 0x26  // P9.26
 
                // Output pins

@@ -55,7 +55,7 @@ TOP:
   
 MAIN_LOOP:
   // Wait for rising clock edge
-  wbs r31, 11
+  wbs r31, 12
 
   // We need to wait at least 3 cycles for the data lines to be valid, so
   // we write the pair of samples from the previous high/low cycle to DDR
