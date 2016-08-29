@@ -25,6 +25,7 @@ permissions and limitations under the License.
 #define SHARED_RAM    r14
 #define SAMPLE        r15
 #define BYTES_WRITTEN r16
+#define COUNTER	      r17
 
 #include "shared_header.h"
 
@@ -46,6 +47,7 @@ TOP:
   // Write out the initial values of bytes_written and shared_ptr before we
   // enter the loop and have to wait for the first rising clock edge.
   mov BYTES_WRITTEN, 0
+  mov COUNTER, 0
   sbbo BYTES_WRITTEN, SHARED_RAM, OFFSET(Params.bytes_written), SIZE(Params.bytes_written)
   mov WRITE_POINTER, DDR_START
   sbbo WRITE_POINTER, SHARED_RAM, OFFSET(Params.shared_ptr), SIZE(Params.shared_ptr)
@@ -67,7 +69,8 @@ MAIN_LOOP:
   sbbo WRITE_POINTER, SHARED_RAM, OFFSET(Params.shared_ptr), SIZE(Params.shared_ptr)
 
   // Read channel 0 into the lower half of the sample register
-  mov SAMPLE.w0, r31.w0
+  add COUNTER, COUNTER, 1
+  mov SAMPLE.w0, COUNTER //r31.w0
 
   // Wait for falling clock edge
   wbc r31, 12
