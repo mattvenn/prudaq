@@ -168,6 +168,7 @@ int main (int argc, char **argv) {
           "%uB of shared DDR available.\n Physical (PRU-side) address:%x\n",
          shared_ddr_len, physical_address);
   fprintf(stderr, "Virtual (linux-side) address: %p\n\n", shared_ddr);
+  fprintf(stderr, "shared ddr len = %d\n", shared_ddr_len);
   if (shared_ddr_len < 1e6) {
     fprintf(stderr, "Shared buffer length is unexpectedly small.  Buffer overruns"
             " are likely at higher sample rates.  (Perhaps extram_pool_sz didn't"
