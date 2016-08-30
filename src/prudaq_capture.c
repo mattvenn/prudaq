@@ -164,6 +164,10 @@ int main (int argc, char **argv) {
     return EXIT_FAILURE;
   }
 
+// wipe buffer
+//for(int i = 0; i < shared_ddr_len; i ++)
+//  shared_ddr[i] = 0;
+
   fprintf(stderr,
           "%uB of shared DDR available.\n Physical (PRU-side) address:%x\n",
          shared_ddr_len, physical_address);
@@ -251,7 +255,7 @@ int main (int argc, char **argv) {
       // the sample data.
       for (int i = 0; i < (write_index - read_index); i++) {
         // Keep just the lower 10 bits from each 16-bit half of the 32-bit word
-        local_buf[i] &= 0x0fff0fff;
+        local_buf[i] &= 0xffffffff;
       }
 
       fwrite(local_buf, bytes, 1, fout);
@@ -266,7 +270,7 @@ int main (int argc, char **argv) {
       bytes_read += bytes;
 
       for (int i = 0; i < tail_words; i++) {
-        local_buf[i] &= 0x0fff0fff;
+        local_buf[i] &= 0xffffffff;
       }
 
       fwrite(local_buf, bytes, 1, fout);
@@ -276,7 +280,7 @@ int main (int argc, char **argv) {
       bytes_read += bytes;
 
       for (int i = 0; i < write_index; i++) {
-        local_buf[tail_words + i] &= 0x0fff0fff;
+        local_buf[tail_words + i] &= 0xffffffff;
       }
 
       fwrite(local_buf, bytes, 1, fout);
@@ -297,8 +301,8 @@ int main (int argc, char **argv) {
                        ((uint32_t) bytes_read + shared_ddr_len);
         }
   
-        fprintf(stderr, "\t%ld bytes / second. %uB written, %uB read.\n",
-                bytes_written / (now - start_time), bytes_written, bytes_read);
+        fprintf(stderr, "\t%ld bytes / second. %uB written, %uB read. diff %lld\n",
+                bytes_written / (now - start_time), bytes_written, bytes_read, difference);
       }
     }
     usleep(100);
@@ -307,6 +311,10 @@ int main (int argc, char **argv) {
   // Wait for the PRU to let us know it's done
   //prussdrv_pru_wait_event(PRU_EVTOUT_0);
   fprintf(stderr, "All done\n");
+
+        uint32_t bytes_written = pparams->bytes_written;
+	uint32_t samples = bytes_written / 4;
+        fprintf(stderr, "got %u samples\n", samples );
 
   prussdrv_pru_disable(0);
   prussdrv_pru_disable(1);
